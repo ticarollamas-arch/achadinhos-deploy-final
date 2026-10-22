@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Achadinhos da Shopee</title>
+<link rel="preload" as="image" href="/assets/banner_1.webp" fetchpriority="high">
+
+<meta name="description" content="As melhores ofertas e achadinhos da Shopee em um só lugar. Economize com nossa seleção diária de produtos com desconto.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<style>
+:root{--primary:#EE4D2D;--primary-dark:#F53D2D;--bg:#F5F5F5;--surface:#FFFFFF;--text:#1E293B;--text-soft:#64748B;--border:#E2E8F0;--radius:14px;--shadow:0 4px 12px rgba(0,0,0,0.06)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;display:flex;flex-direction:column;min-height:100vh}
+a{text-decoration:none;color:inherit}
+
+/* CARROSSEL */
+.carousel-section-container { width: 100%; margin: 0; padding: 0; }
+.carousel-outer-wrapper { position: relative; width: 100%; border-radius: 0 0 14px 14px; overflow: hidden; aspect-ratio: 3 / 1; background: var(--surface); }
+.carousel-inner-container { display: flex !important; height: 100%; width: 100%; transition: transform 0.5s ease-in-out; margin: 0; padding: 0; list-style: none; }
+.carousel-slide-item { display: block; flex: 0 0 100%; width: 100%; height: 100%; cursor: pointer; }
+.carousel-slide-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.carousel-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.9); border: none; width: 38px; height: 38px; cursor: pointer; font-size: 18px; border-radius: 50%; z-index: 10; display: flex; align-items: center; justify-content: center; }
+.carousel-btn.prev { left: 12px; } .carousel-btn.next { right: 12px; }
+.carousel-dots { position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); display: flex; gap: 6px; z-index: 10; }
+.dot { width: 8px; height: 8px; background: rgba(255,255,255,0.5); border-radius: 50%; cursor: pointer; transition: 0.3s; }
+.dot.active { background: var(--primary); width: 22px; border-radius: 10px; }
+
+/* BUSCA */
+.search-floating { width: 100%; margin: 15px auto 20px auto; padding: 0 16px; box-sizing: border-box; }
+.search-box { position: relative; width: 100%; border-radius: 50px; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+.search-box input { width: 100%; padding: 12px 16px 12px 45px; border: 1px solid var(--border); border-radius: 50px; font-size: 14px; outline: none; background: var(--surface); }
+.search-box input:focus { border-color: var(--primary); }
+.search-box .search-icon { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--text-soft); pointer-events: none; }
+
+/* CATEGORIAS */
+.categories-wrapper { width: 100%; margin: 0 auto 20px; padding: 0 16px; box-sizing: border-box; }
+.categories-container { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 10px; scrollbar-width: none; }
+.categories-container::-webkit-scrollbar { display: none; }
+.category-tab { background: var(--surface); border: 1px solid var(--border); padding: 8px 16px; border-radius: 50px; font-size: 13px; font-weight: 600; white-space: nowrap; cursor: pointer; color: var(--text-soft); transition: 0.2s; }
+.category-tab.active { background: var(--primary); color: white; border-color: var(--primary); }
+
+/* PRODUTOS */
+.main-wrapper{width: 100%; margin:0 auto; padding: 0 16px 50px 16px; flex:1; box-sizing: border-box;}
+.products-grid { display: grid; gap: 18px; width: 100%; grid-template-columns: repeat(2, 1fr); }
+@media (min-width: 768px) { .products-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 1024px) { .products-grid { grid-template-columns: repeat(4, 1fr); } }
+@media (min-width: 1280px) { .products-grid { grid-template-columns: repeat(5, 1fr); } }
+
+.product-card{background:var(--surface);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--border);display:flex;flex-direction:column;transition:0.2s}
+.product-card:hover{transform:translateY(-4px);box-shadow:0 12px 28px rgba(0,0,0,0.08)}
+.card-image-wrapper{width:100%;padding-top:100%;position:relative;background:#f1f5f9}
+.card-image-wrapper img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover}
+.card-info{padding:14px;display:flex;flex-direction:column;flex-grow:1}
+.card-title{font-size:13px;font-weight:600;margin-bottom:12px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;height:38px;line-height:19px}
+.price-tag{font-size:18px;font-weight:800;color:var(--primary);margin-bottom:10px;}
+.btn-buy{display:flex;align-items:center;justify-content:center;gap:6px;background:var(--primary);color:white;padding:9px;border-radius:8px;font-weight:600;font-size:13px;margin-top:auto;}
+.btn-buy:hover{background:var(--primary-dark)}
+
+.loading-more { text-align: center; width: 100%; grid-column: 1/-1; padding: 20px; color: var(--primary); font-weight: bold; display: none; }
+
+/* RODAPÉ */
+.footer-main{background:#0f172a;padding:36px 20px;text-align:center;color:#cbd5e1;font-size:13px;border-top:4px solid var(--primary);margin-top:auto}
+</style>
+
+<style>
+  .seo-pagination { display: none; } /* Esconde do humano, mas o Google lê */
+</style>
+
+<style>
+.category-tab.active { background-color: #B82400 !important; color: #FFFFFF !important; }
+span[style*="PUBLICIDADE"] { color: #334155 !important; font-weight: 700 !important; }
+p[style*="Nenhum produto encontrado"] { color: #1e293b !important; font-weight: bold; }
+a[href="/privacidade.html"] { text-decoration: underline !important; color: #60a5fa !important; font-weight: bold; }
+</style>
+
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Achadinhos da Shopee",
+      "url": "https://osachadinhosdashopee.com.br/",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://osachadinhosdashopee.com.br/?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+
+
+    <!-- Google AdSense -->
+    <meta name="google-adsense-account" content="ca-pub-8190600021817615">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8190600021817615" crossorigin="anonymous"></script>
+
+</head>
+<body>
+
+<div class="carousel-section-container">
+  <div class="carousel-outer-wrapper" id="carouselOuterWrapper">
+    <div class="carousel-inner-container" id="banners-carrossel">
+      <a class="carousel-slide-item" href="/"><img src="https://blogger.googleusercontent.com/img/a/AVvXsEgs2cHAYDAd7zkU1nOmaT7DFiKOTbIc_FhCqffCv2O1OCUVwUXKYN5sn6Tq_zT-KONlkJfmMG9MrIHV-ckMw92ftZw3bmcMLh2s6yEs6FYjcmu1rr5fM38BQS87bG2ezGACrBCybxY7CcuJKQhOpy-y4LmOhEV3lFFyjuAVgD0z4cf6CUbu9waaROPSVMrd=s1600" alt="Banner 1" fetchpriority="high"></a>
+      <a class="carousel-slide-item" href="/"><img src="https://blogger.googleusercontent.com/img/a/AVvXsEjqDT0uInHhFzrrkDmyS-zrIx0uBFUD9OLeos2KucCNekkv1os8_VD5j31U9gTvoIMqYAaBinP8HGiwaAr_Yz-ZRfWNMVMQKAfl2qk1CcwGibw6Ar1P_DYXuuRB-rIprvrFs66--BG8uPwo4pct8SIQ73PFdDEPSOEL43mLcAYi8KDI334qm-Lo-bquAUqb=s1600" alt="Banner 2"></a>
+    </div>
+    <button class="carousel-btn prev" onclick="moveSlide(-1)">&#10094;</button>
+    <button class="carousel-btn next" onclick="moveSlide(1)">&#10095;</button>
+    <div class="carousel-dots" id="carouselDots"></div>
+  </div>
+</div>
+
+<!-- BARRA DE BUSCA LIVE SEARCH (SEM BOTÃO) -->
+<div class="search-floating">
+  <div class="search-box">
+    <svg class="search-icon" height="18" viewBox="0 0 24 24" width="18"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" fill="currentColor"/></svg>
+    <input type="text" id="searchInput" placeholder="Buscar produtos..." oninput="filtrarProdutos()">
+  </div>
+</div>
+
+<div class="categories-wrapper">
+  <div class="categories-container" id="categoriesContainer"></div>
+</div>
+
+<main class="main-wrapper">
+  <div class="products-grid" id="shopee-products">
+    <div class="loading-more" id="loadingMore" style="display:none;">⏳ Carregando mais ofertas...</div>
+    <button class="btn-load-more" id="btnLoadMore" onclick="carregarMaisProdutos()">Carregar Mais Ofertas</button>
+  </div>
+</main>
+
+<div style="max-width: 860px; margin: 20px auto 0 auto; padding: 0 16px; text-align: center;">
+    <span style="font-size: 10px; color: #94A3B8; text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 8px;">Publicidade</span>
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXXXXXXXXXXXXXX" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins>
+</div>
+
+<footer class="footer-main">
+    <div style="font-weight:900;font-size:20px;margin-bottom:8px;color:var(--primary)">Achadinhos da Shopee</div>
+    <p>Os preços mostrados podem sofrer alteração conforme as ofertas oficiais da Shopee Brasil.</p>
+    <div style="display: flex; justify-content: center; gap: 15px; margin-top: 15px; flex-wrap: wrap;">
+        <a href="/termos.html" style="color: #94a3b8; text-decoration: none; font-size: 13px;">Termos de Uso</a>
+        <a href="/privacidade.html" style="color: #94a3b8; text-decoration: none; font-size: 13px;">Política de Privacidade</a>
+        <a href="/cookies.html" style="color: #94a3b8; text-decoration: none; font-size: 13px;">Política de Cookies</a>
+    </div>
+    <p style="font-size:10px;margin-top:15px;opacity:0.6;">&copy; 2026 TODOS OS DIREITOS RESERVADOS.</p>
+</footer>
+
+<div id="cookie-banner" style="display: none; position: fixed; bottom: 0; left: 0; width: 100%; background: #161b22; border-top: 1px solid #30363d; padding: 15px 20px; z-index: 999999; box-shadow: 0 -4px 12px rgba(0,0,0,0.1); font-family: 'Inter', sans-serif; align-items: center; justify-content: center; flex-wrap: wrap; gap: 15px;">
+    <p style="margin: 0; color: #c9d1d9; font-size: 13px; max-width: 600px; line-height: 1.4;">
+        🍪 Utilizamos cookies para melhorar sua experiência, personalizar anúncios e analisar o tráfego. Ao continuar, você concorda com nossa <a href="/privacidade.html" style="color: #58a6ff;">Política de Privacidade</a>.
+    </p>
+    <button onclick="aceitarCookies()" style="background: #238636; color: white; border: none; padding: 10px 20px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 13px;">Aceitar e Fechar</button>
+</div>
+
+
+<script>
+  // 1. Lógica do Carrossel
+  let currentSlide = 0;
+  const slides = document.querySelectorAll('.carousel-slide-item');
+  const carouselInner = document.getElementById('banners-carrossel');
+  const dotsContainer = document.getElementById('carouselDots');
+  
+  if(slides.length > 0) {
+      slides.forEach((_, index) => {
+          const dot = document.createElement('span');
+          dot.className = 'dot' + (index === 0 ? ' active' : '');
+          dot.onclick = () => goToSlide(index);
+          dotsContainer.appendChild(dot);
+      });
+  }
+  function goToSlide(index) {
+      currentSlide = index;
+      carouselInner.style.transform = `translateX(-${currentSlide * 100}%)`;
+      document.querySelectorAll('.dot').forEach((dot, i) => dot.classList.toggle('active', i === currentSlide));
+  }
+  window.moveSlide = (dir) => {
+      let newIndex = currentSlide + dir;
+      if (newIndex >= slides.length) newIndex = 0;
+      if (newIndex < 0) newIndex = slides.length - 1;
+      goToSlide(newIndex);
+  };
+  setInterval(() => moveSlide(1), 5000);
+
+  // 2. Lógica de Produtos (Nova API Paginada)
+  let categoriaAtiva = "Todos";
+  let termoBusca = "";
+  let paginaAtual = 1;
+  const itensPorPagina = 20; 
+  let carregando = false;
+  let temMaisProdutos = true;
+
+  const CATEGORIAS_FIXAS = ["Todos", "Moda Plus Size", "Moda Feminina", "Moda Masculina", "Moda Praia", "Eletrônicos", "Celulares e Capas", "Móveis", "Cozinha", "Casa e Utilidades", "Beleza e Perfumaria", "Pet Shop", "Bebês e Crianças", "Brinquedos", "Esportes e Fitness", "Ferramentas e Auto", "Papelaria e Escritório", "Saúde e Bem-estar", "Games e Informática", "Acessórios", "Guarda-Chuvas", "Novidades / Variedades"];
+
+  function normalizar(texto) {
+      return texto ? texto.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase() : "";
+  }
+
+  async function carregarDadosIniciais() {
+    criarCategorias();
+    document.getElementById('shopee-products').innerHTML = '<div class="loading-more" id="loadingMore">⏳ Carregando ofertas...</div>';
+    paginaAtual = 1;
+    temMaisProdutos = true;
+    carregando = false;
+    await carregarMaisProdutos(); 
+  }
+
+  async function carregarMaisProdutos() {
+    if (carregando || !temMaisProdutos) return;
+    carregando = true;
+    
+    const loadingEl = document.getElementById('loadingMore');
+    if(loadingEl) loadingEl.style.display = 'block';
+    const grid = document.getElementById('shopee-products');
+
+    try {
+      const url = `/api/catalogo?v=2&page=${paginaAtual}&limit=${itensPorPagina}&q=${encodeURIComponent(termoBusca)}&cat=${encodeURIComponent(categoriaAtiva)}&t=${Date.now()}`;
+      const res = await fetch(url);
+      const json = await res.json();
+      const produtosParaMostrar = json;
+
+      if (produtosParaMostrar.length === 0) {
+          if (loadingEl) loadingEl.style.display = 'none';
+          temMaisProdutos = false;
+          carregando = false;
+          if (paginaAtual === 1) {
+              grid.innerHTML = `<p style="text-align:center;width:100%;grid-column:1/-1;color:var(--text-soft);padding:40px;">Nenhum produto encontrado.</p>`;
+          }
+          return;
+      }
+
+      const htmlNovosProdutos = produtosParaMostrar.map(p => `
+        <article class="product-card">
+          <div class="card-image-wrapper">
+            <img src="${p.imagem}" alt="${p.titulo}" loading="lazy">
+          </div>
+          <div class="card-info">
+            <h2 class="card-title">${p.titulo}</h2>
+            <div class="price-tag">R$ ${Number(p.preco).toFixed(2).replace('.', ',')}</div>
+            <a href="/produto.html?id=${p.itemId}" class="btn-buy">🛒 Ver Oferta</a>
+          </div>
+        </article>
+      `).join('');
+
+      if (loadingEl) {
+          loadingEl.insertAdjacentHTML('beforebegin', htmlNovosProdutos);
+          loadingEl.style.display = 'none';
+      }
+
+      paginaAtual++; 
+      carregando = false;
+    } catch(e) {
+      console.error("Erro na API:", e);
+      if(loadingEl) loadingEl.style.display = 'none';
+      carregando = false;
+    }
+  }
+
+  function slugify(text) {
+    let t = text.toString();
+    if (t.length > 80) t = t.substring(0, 80);
+    return t.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s+/g, '-').replace(/[^\w\-]+/g, '').replace(/\-\-+/g, '-');
+}
+
+  function criarCategorias() {
+    const container = document.getElementById('categoriesContainer');
+    container.innerHTML = CATEGORIAS_FIXAS.map(cat => `
+      <button class="category-tab ${cat === categoriaAtiva ? 'active' : ''}" onclick="mudarCategoria('${cat}')">
+        ${cat}
+      </button>
+    `).join('');
+  }
+
+  function mudarCategoria(cat) {
+    categoriaAtiva = cat;
+    document.querySelectorAll('.category-tab').forEach(tab => { tab.classList.toggle('active', tab.innerText.trim() === cat); });
+    document.getElementById('shopee-products').innerHTML = '<div class="loading-more" id="loadingMore" style="display:none;">⏳ Carregando...</div>';
+    paginaAtual = 1;
+    temMaisProdutos = true;
+    carregando = false;
+    carregarMaisProdutos();
+  }
+
+  function filtrarProdutos() {
+    termoBusca = document.getElementById('searchInput').value.trim();
+    document.getElementById('shopee-products').innerHTML = '<div class="loading-more" id="loadingMore" style="display:none;">⏳ Buscando...</div>';
+    paginaAtual = 1;
+    temMaisProdutos = true;
+    carregando = false;
+    carregarMaisProdutos();
+  }
+
+  window.addEventListener('scroll', () => {
+      if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 200) {
+          carregarMaisProdutos();
+      }
+  });
+
+  document.addEventListener("DOMContentLoaded", () => {
+    carregarDadosIniciais();
+  });
+
+  if (!localStorage.getItem('cookies_aceitos')) document.getElementById('cookie-banner').style.display = 'flex';
+  function aceitarCookies() { localStorage.setItem('cookies_aceitos', 'true'); document.getElementById('cookie-banner').style.display = 'none'; }
+</script>
